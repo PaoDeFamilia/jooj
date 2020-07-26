@@ -75,7 +75,7 @@
             timing = setInterval(function(){mudaPos();}, 1000);
         }
         function temporizador(){
-            if(!(t>5)){
+            if(!(t>60)){
                 document.getElementById("timer").innerHTML = "Timer: " + t;
                 t++;
                 setTimeout(function(){temporizador();},1000)
