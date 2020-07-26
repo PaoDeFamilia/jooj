@@ -5,16 +5,24 @@
         <title>🥳</title>
         <link rel="icon" href="https://images.tcdn.com.br/img/img_prod/326825/pao_crocante_para_hamburguer_70g_pct_c_12_unidades_cod_123_641_1_20190510170310.png">
     </head>
-    <body onload="bgstart(), Alvo()" onresize="ajuste()">
+    <body onload="bgstart(), Alvo(), temporizador()" onresize="ajuste()">
         <span id="placar" style="background-color: black; color: white; padding: 3px; margin-top: 10px; border-radius: 5px;">Placar: 0</span>
+        <span id="timer" style="float: right; margin-right: 10px; background-color: black; color: white; padding: 3px; border-radius: 5px;"></span>
+        <div id="divgo" style="width: 40%; margin-left: -1000px; text-align: center;">
+            <span id="go" style="color: white; font-size: 600%;">Game Over!</span>
+            <br />
+            <span id="plac" style="color: white; font-size: 100%;"></span>
+            <button id="btnRestart" onclick="btnRestart()" onmouseover="btnRStyle()" style="cursor: pointer; border: 1px solid white; color: white; font-family: Arial, Helvetica, sans-serif; font-size: 25px; height: 45px; display: block; background-color: black; text-align: center; border-radius: 2%; margin: 0 auto;">Reiniciar</button>
+        </div>
         <svg width="50" height="50" id="alvo">
             <circle id="alvoc" cx="25" cy="25" r="20" stroke="black" stroke-width="1" fill="white"  onmousedown="nosei()"/>
         </svg>
     </body>
     <script>
+        var bginterval;
         var r, g, b;
         function bgstart(){
-            setInterval(function(){ 
+            bginterval = setInterval(function(){ 
             r = Math.floor(Math.random()*255);
 			g = Math.floor(Math.random()*255);
 			b = Math.floor(Math.random()*255);
@@ -26,6 +34,7 @@
         var porcentX = 0;
         var porcentY = 0;
         var timing;
+        var t = 0;
         var pla = 0;
         function ajuste(){
             altura = window.innerHeight;
@@ -64,6 +73,38 @@
             clearInterval(timing); 
             mudaPos(); 
             timing = setInterval(function(){mudaPos();}, 1000);
+        }
+        function temporizador(){
+            if(!(t>5)){
+                document.getElementById("timer").innerHTML = "Timer: " + t;
+                t++;
+                setTimeout(function(){temporizador();},1000)
+            }
+            else{
+                clearInterval(timing);
+                clearInterval(bginterval);
+                alvo.style.left = -1000+"px";
+                document.getElementById("divgo").style.marginLeft = "30%";
+                document.getElementById("divgo").style.marginTop = "10%";
+                document.getElementById("plac").innerHTML = "Você acertou " + (pla/10) + " alvos!";
+                document.body.style.backgroundColor = "black";
+            }
+        }
+        function btnRStyle(){
+            r = Math.floor(Math.random()*255);
+			g = Math.floor(Math.random()*255);
+			b = Math.floor(Math.random()*255);
+            document.getElementById("btnRestart").style.color = "rgb("+r+", "+g+", "+b+")";
+            document.getElementById("go").style.color = "rgb("+r+", "+g+", "+b+")";
+            document.getElementById("plac").style.color = "rgb("+r+", "+g+", "+b+")";
+            if (r < 30 && g < 30 && b < 30){
+                document.getElementById("btnRestart").style.color = "white";
+                document.getElementById("go").style.color = "white";
+                document.getElementById("plac").style.color = "white";
+            }
+        }
+        function btnRestart(){
+            location.reload();
         }
     </script>
 </html>
