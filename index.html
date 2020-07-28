@@ -5,13 +5,13 @@
         <title>🥳</title>
         <link rel="icon" href="https://images.tcdn.com.br/img/img_prod/326825/pao_crocante_para_hamburguer_70g_pct_c_12_unidades_cod_123_641_1_20190510170310.png">
     </head>
-    <body onload="Alvo()" onresize="ajuste(), Alvo()" onkeydown="keyRestart(event)" style="background-color: white; font-family: Verdana;">
+    <body onload="Alvo()" onresize="ajuste(), Alvo()" onkeydown="keyRestart(event)" style="background-color: black; font-family: Verdana;">
         <div style="user-select: none; position:fixed; left: 50%; transform: translate(-50%, 0); opacity:0.5; z-index:99; color:gray; text-align: center;">aperte R para reiniciar</div>
         <span id="placar" style="padding: 3px; color: white; background-color: black; margin-top: 10px; border-radius: 5px;">Placar: -</span>
         <span id="timer" style="padding: 3px; float: right; margin-right: 10px; color: white; background-color: black; border-radius: 5px;">Timer: -</span><br><br>
-        <center><button id="theme" onclick="theme()" style="cursor: pointer; background-color: black; color: white; border-radius: 50px; height: 20px; border: 0;">Tema</button></center>
+        <center><button id="theme" onclick="theme()" style="cursor: pointer; background-color: white; color: black; border-radius: 50px; height: 20px; border: 0;">Tema</button></center>
         <div id="divgo" style="width: 40%; margin-left: -1000px; text-align: center;">
-            <span id="go" style="color: white; font-size: 600%;">Game Over!</span>
+            <span id="go" style="color: white; font-size: 500%;">Game Over!</span>
             <br />
             <span id="plac" style="color: white; font-size: 100%;"></span>
             <button id="btnRestart" onclick="btnRestart()" onmouseover="btnRStyle()" style="cursor: pointer; border: 1px solid white; color: white; font-family: Arial, Helvetica, sans-serif; font-size: 25px; height: 45px; display: block; background-color: black; text-align: center; border-radius: 2%; margin: 0 auto;">Reiniciar</button>
@@ -55,17 +55,17 @@
             }, 15);
         }
         function theme(){
-            if (!(bg.backgroundColor == "white") && $theme == 0){
-                clearInterval(bginterval);
-                bg.backgroundColor = "white";
-                document.getElementById("theme").style.backgroundColor = "black";
-                document.getElementById("theme").style.color = "white";
-            }
-            else if (!(bg.backgroundColor == "black") && $theme == 0){
+            if (!(bg.backgroundColor == "black") && $theme == 0){
                 clearInterval(bginterval);
                 bg.backgroundColor = "black";
                 document.getElementById("theme").style.backgroundColor = "white";
                 document.getElementById("theme").style.color = "black";
+            }
+            else if (!(bg.backgroundColor == "white") && $theme == 0){
+                clearInterval(bginterval);
+                bg.backgroundColor = "white";
+                document.getElementById("theme").style.backgroundColor = "black";
+                document.getElementById("theme").style.color = "white";
                 $theme = 1;
             }
             else{
@@ -139,6 +139,7 @@
                 document.getElementById("plac").innerHTML = "Você acertou " + (pla/10) + " alvos!";
                 document.body.style.backgroundColor = "black";
                 document.getElementById("theme").style.visibility = "hidden";
+                document.body.onresize = "";
             }
         }
         function btnRStyle(){
@@ -149,11 +150,8 @@
             document.getElementById("btnRestart").style.borderColor = "rgb("+r+", "+g+", "+b+")";
             document.getElementById("go").style.color = "rgb("+r+", "+g+", "+b+")";
             document.getElementById("plac").style.color = "rgb("+r+", "+g+", "+b+")";
-            if (r < 30 && g < 30 && b < 30){
-                document.getElementById("btnRestart").style.color = "white";
-            document.getElementById("btnRestart").style.borderColor = "white";
-                document.getElementById("go").style.color = "white";
-                document.getElementById("plac").style.color = "white";
+            if (r < 40 && g < 40 && b < 40){
+                btnRStyle();
             }
         }
         function keyRestart(tecla){
