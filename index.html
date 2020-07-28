@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html style="cursor: crosshair;">
     <head>
         <meta charset="UTF-8">
         <title>🥳</title>
         <link rel="icon" href="https://images.tcdn.com.br/img/img_prod/326825/pao_crocante_para_hamburguer_70g_pct_c_12_unidades_cod_123_641_1_20190510170310.png">
     </head>
-    <body onload="Alvo()" onresize="ajuste(), Alvo()" style="background-color: white;">
+    <body onload="Alvo()" onresize="ajuste(), Alvo()" onkeydown="keyRestart(event)" style="background-color: white; font-family: Verdana;">
+        <div style="user-select: none; position:fixed; left: 50%; transform: translate(-50%, 0); opacity:0.5; z-index:99; color:gray; text-align: center;">aperte R para reiniciar</div>
         <span id="placar" style="padding: 3px; color: white; background-color: black; margin-top: 10px; border-radius: 5px;">Placar: -</span>
         <span id="timer" style="padding: 3px; float: right; margin-right: 10px; color: white; background-color: black; border-radius: 5px;">Timer: -</span><br><br>
-        <center><button id="theme" onclick="theme()" style="background-color: black; color: white; border-radius: 50px; height: 20px; border: 0;">Tema</button></center>
+        <center><button id="theme" onclick="theme()" style="cursor: pointer; background-color: black; color: white; border-radius: 50px; height: 20px; border: 0;">Tema</button></center>
         <div id="divgo" style="width: 40%; margin-left: -1000px; text-align: center;">
             <span id="go" style="color: white; font-size: 600%;">Game Over!</span>
             <br />
@@ -154,6 +155,10 @@
                 document.getElementById("go").style.color = "white";
                 document.getElementById("plac").style.color = "white";
             }
+        }
+        function keyRestart(tecla){
+            if (tecla.key == "r" || tecla.key == "R")
+                location.reload();
         }
         function btnRestart(){
             location.reload();
