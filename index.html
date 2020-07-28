@@ -5,13 +5,10 @@
         <title>🥳</title>
         <link rel="icon" href="https://images.tcdn.com.br/img/img_prod/326825/pao_crocante_para_hamburguer_70g_pct_c_12_unidades_cod_123_641_1_20190510170310.png">
     </head>
-    <body onload="bgstart(), Alvo(), temporizador()" onresize="ajuste()" >
-	<style>
-		html {cursor: crosshair;}
-		body {background-color: black;}
-	</style>
-        <span id="placar" style="background-color: black; color: white; padding: 3px; margin-top: 10px; border-radius: 5px;">Placar: 0</span>
-        <span id="timer" style="float: right; margin-right: 10px; background-color: black; color: white; padding: 3px; border-radius: 5px;"></span>
+    <body onload="Alvo()" onresize="ajuste(), Alvo()" style="background-color: white;">
+        <span id="placar" style="padding: 3px; color: white; background-color: black; margin-top: 10px; border-radius: 5px;">Placar: -</span>
+        <span id="timer" style="padding: 3px; float: right; margin-right: 10px; color: white; background-color: black; border-radius: 5px;">Timer: -</span><br><br>
+        <center><button id="theme" onclick="theme()" style="background-color: black; color: white; border-radius: 50px; height: 20px; border: 0;">Tema</button></center>
         <div id="divgo" style="width: 40%; margin-left: -1000px; text-align: center;">
             <span id="go" style="color: white; font-size: 600%;">Game Over!</span>
             <br />
@@ -19,19 +16,61 @@
             <button id="btnRestart" onclick="btnRestart()" onmouseover="btnRStyle()" style="cursor: pointer; border: 1px solid white; color: white; font-family: Arial, Helvetica, sans-serif; font-size: 25px; height: 45px; display: block; background-color: black; text-align: center; border-radius: 2%; margin: 0 auto;">Reiniciar</button>
         </div>
         <svg width="50" height="50" id="alvo">
-            <circle id="alvoc" cx="25" cy="25" r="20" stroke="black" stroke-width="1" fill="white"  onmousedown="nosei()"/>
+            <circle id="alvoc" cx="25" cy="25" r="20" stroke="black" stroke-width="1" fill="white"  onmousedown="comecar(), temporizador()"/>
         </svg>
     </body>
     <script>
+        var $theme = 0;
         var bginterval;
+        var codbg = 0;
         var r, g, b;
+        var rbg = Math.floor(Math.random()*255), gbg = Math.floor(Math.random()*255), bbg = Math.floor(Math.random()*255);
+        var bg = document.body.style;
         function bgstart(){
-            bginterval = setInterval(function(){ 
-            r = Math.floor(Math.random()*255);
-			g = Math.floor(Math.random()*255);
-			b = Math.floor(Math.random()*255);
-            document.body.style.backgroundColor = "rgb("+r+", "+g+", "+b+")";
-            }, 1000);
+            bginterval = setInterval(function(){
+                if (gbg < 255 && codbg == 0){
+                    gbg++;
+                    if (gbg == 255)
+                    codbg = 1;
+                }
+                else if (rbg > 0 && codbg == 1)
+                    rbg--;
+                else if (bbg < 255 && codbg != 2)
+                    bbg++;
+                else if (gbg > 0){
+                    gbg--;
+                    if (gbg == 0)
+                    codbg = 2;
+                }
+                else if (rbg < 255)
+                    rbg++;
+                else if (bbg > 0 && codbg == 2){
+                    bbg--;
+                    if (bbg == 0)
+                    codbg = 0;
+                }
+                document.body.style.backgroundColor = "rgb("+rbg+", "+gbg+", "+bbg+")";
+                document.getElementById("theme").style.color = "rgb("+rbg+", "+gbg+", "+bbg+")";
+            }, 15);
+        }
+        function theme(){
+            if (!(bg.backgroundColor == "white") && $theme == 0){
+                clearInterval(bginterval);
+                bg.backgroundColor = "white";
+                document.getElementById("theme").style.backgroundColor = "black";
+                document.getElementById("theme").style.color = "white";
+            }
+            else if (!(bg.backgroundColor == "black") && $theme == 0){
+                clearInterval(bginterval);
+                bg.backgroundColor = "black";
+                document.getElementById("theme").style.backgroundColor = "white";
+                document.getElementById("theme").style.color = "black";
+                $theme = 1;
+            }
+            else{
+                bgstart(); 
+                $theme = 0;
+            }
         }
         var altura = 0;
         var largura = 0;
@@ -40,18 +79,20 @@
         var timing;
         var t = 0;
         var pla = 0;
+        var posX = 0;
+        var posY = 0;
         function ajuste(){
             altura = window.innerHeight;
             largura = window.innerWidth;
             porcentY = window.innerHeight/4;
             porcentX = window.innerWidth/4;
+            posX = (largura/4)-25;
+            posY = (altura/4)-25;
 
             console.log(largura, altura);
         }
         ajuste();
 
-        var posX = (largura/4)-25;
-        var posY = (altura/4)-25;
         function Alvo(){
             var alvo = document.getElementById("alvo");
             document.body.appendChild(alvo);
@@ -66,12 +107,15 @@
             posY = posY < 0 ? 0 : posY;
             alvo.style.left = porcentX+posX + "px";
             alvo.style.top = porcentY+posY + "px";
-            r = Math.floor(Math.random()*255);
-			g = Math.floor(Math.random()*255);
-			b = Math.floor(Math.random()*255);
+            g = 240;
+            while (g > 180){
+                r = Math.floor(Math.random()*255);
+			    g = Math.floor(Math.random()*255);
+			    b = Math.floor(Math.random()*255);
+            }
             document.getElementById("alvoc").setAttributeNS(null,"fill","rgb("+r+", "+g+", "+b+")");
         }
-        function nosei(){
+        function comecar(){
             pla = pla + 10; 
             document.getElementById("placar").innerHTML = "Placar: " + pla; 
             clearInterval(timing); 
@@ -79,6 +123,7 @@
             timing = setInterval(function(){mudaPos();}, 1000);
         }
         function temporizador(){
+            document.getElementById("alvoc").setAttribute("onmousedown","comecar()");
             if(!(t>60)){
                 document.getElementById("timer").innerHTML = "Timer: " + t;
                 t++;
@@ -92,6 +137,7 @@
                 document.getElementById("divgo").style.marginTop = "10%";
                 document.getElementById("plac").innerHTML = "Você acertou " + (pla/10) + " alvos!";
                 document.body.style.backgroundColor = "black";
+                document.getElementById("theme").style.visibility = "hidden";
             }
         }
         function btnRStyle(){
@@ -99,10 +145,12 @@
 			g = Math.floor(Math.random()*255);
 			b = Math.floor(Math.random()*255);
             document.getElementById("btnRestart").style.color = "rgb("+r+", "+g+", "+b+")";
+            document.getElementById("btnRestart").style.borderColor = "rgb("+r+", "+g+", "+b+")";
             document.getElementById("go").style.color = "rgb("+r+", "+g+", "+b+")";
             document.getElementById("plac").style.color = "rgb("+r+", "+g+", "+b+")";
             if (r < 30 && g < 30 && b < 30){
                 document.getElementById("btnRestart").style.color = "white";
+            document.getElementById("btnRestart").style.borderColor = "white";
                 document.getElementById("go").style.color = "white";
                 document.getElementById("plac").style.color = "white";
             }
