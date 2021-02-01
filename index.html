@@ -22,7 +22,7 @@
             <span id="plac" style="color: white; font-size: 100%;"></span>
             <button id="btnRestart" onclick="btnRestart()" onmouseover="btnRStyle()" style="cursor: pointer; border: 1px solid white; color: white; font-family: Arial, Helvetica, sans-serif; font-size: 25px; height: 45px; display: block; background-color: black; text-align: center; border-radius: 2%; margin: 0 auto;">Reiniciar</button>
         </div>
-        <svg width="50" height="50" id="alvo">
+        <svg width="50" height="50" id="alvo" style="border-radius: 100%;">
             <circle id="alvoc" cx="25" cy="25" r="25" stroke="black" stroke-width="1" fill="white"  onmousedown="comecar(), temporizador()"/>
         </svg>
     </body>
@@ -121,6 +121,7 @@
 			    b = Math.floor(Math.random()*255);
             }
             document.getElementById("alvoc").setAttributeNS(null,"fill","rgb("+r+", "+g+", "+b+")");
+            document.getElementById("alvo").style.boxShadow = "0px 0px 8px 8px rgba("+r+", "+g+", "+b+", 0.192)";
         }
         function comecar(){
             pla = pla + 10; 
@@ -156,7 +157,7 @@
             document.getElementById("btnRestart").style.borderColor = "rgb("+r+", "+g+", "+b+")";
             document.getElementById("go").style.color = "rgb("+r+", "+g+", "+b+")";
             document.getElementById("plac").style.color = "rgb("+r+", "+g+", "+b+")";
-            if (r < 40 && g < 40 && b < 40){
+            if (r < 200 && g < 200 && b < 200){
                 btnRStyle();
             }
         }
